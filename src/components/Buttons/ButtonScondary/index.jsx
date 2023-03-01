@@ -1,8 +1,8 @@
 import StyledSecondary from "./styled";
 
-const ButtonSecondary = ({ text, color, click }) => {
+const ButtonSecondary = ({ text, color, onClick }) => {
     return (
-        <StyledSecondary color={color} onClick={click}>
+        <StyledSecondary color={color} onClick={onClick}>
             {text}
         </StyledSecondary>
     );

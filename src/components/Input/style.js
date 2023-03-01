@@ -33,6 +33,11 @@ const StyledContainer = styled.div`
         outline: 2px solid var(--grey-0);
     }
 
+    input:hover {
+        color: var(--grey-0);
+        outline: 2px solid var(--grey-0);
+    }
+
     @media (min-width: 769px) {
         width: 325px;
     }

@@ -5,6 +5,8 @@ import { GlobalReset } from "./styles/reset.js";
 import { GlobalStyle } from "./styles/globalStyle.js";
 import { AppStyle } from "./styles/index.js";
 import { BrowserRouter } from "react-router-dom";
+import { UserProvider } from "./providers/UserContext";
+import { TechProvider } from "./providers/TechContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
@@ -12,7 +14,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <GlobalStyle />
         <AppStyle />
         <BrowserRouter>
-            <App />
+            <UserProvider>
+                <TechProvider>
+                    <App />
+                </TechProvider>
+            </UserProvider>
         </BrowserRouter>
     </React.StrictMode>
 );

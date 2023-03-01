@@ -41,6 +41,24 @@ const StyledDashboard = styled.div`
         color: var(--grey-1);
     }
 
+    main {
+        margin-inline: 25px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .list__title {
+        display: flex;
+        justify-content: space-between;
+
+        max-width: 780px;
+        width: 100%;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+    }
+
     main > h2 {
         margin-bottom: 25px;
     }

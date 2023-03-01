@@ -5,13 +5,14 @@ import YupPassword from "yup-password";
 YupPassword(yup);
 import Form from "./style.js";
 import api from "../../services/api";
-import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/Logo.svg";
 import InputContainer from "../Input/index.jsx";
 import ButtonPrimary from "../Buttons/ButtonPrimary/index.jsx";
+import { useContext } from "react";
+import { UserContext } from "../../providers/UserContext.jsx";
 
 const RegisterForm = () => {
-    const navigate = useNavigate();
+    const { navigate, onSubmitFunctionRegister } = useContext(UserContext);
 
     const formSchema = yup
         .object({
@@ -55,20 +56,6 @@ const RegisterForm = () => {
         resolver: yupResolver(formSchema),
     });
 
-    const onSubmitFunction = async (data) => {
-        delete data.password_confirm;
-
-        try {
-            const res = await api.post("/users", data);
-
-            console.log(res);
-
-            navigate("/");
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
     return (
         <Form>
             <div className="header">
@@ -76,7 +63,7 @@ const RegisterForm = () => {
 
                 <button onClick={() => navigate("/")}>Voltar</button>
             </div>
-            <form onSubmit={handleSubmit(onSubmitFunction)}>
+            <form onSubmit={handleSubmit(onSubmitFunctionRegister)}>
                 <InputContainer
                     typeName="name"
                     title="Nome"
@@ -84,13 +71,6 @@ const RegisterForm = () => {
                     errors={errors.name?.message}
                     register={register}
                 />
-                {/* <label htmlFor="name">Nome</label>
-                <input
-                    id="name"
-                    maxLength={30}
-                    placeholder="Digite aqui seu nome"
-                />
-                <span>{errors.name?.message}</span> */}
 
                 <InputContainer
                     typeName="email"
@@ -100,13 +80,6 @@ const RegisterForm = () => {
                     register={register}
                 />
 
-                {/* <label htmlFor="email">Email</label>
-                <input
-                    id="email"
-                    placeholder="Digite aqui se email"
-                    {...register("email")}
-                />
-                <span>{errors.email?.message}</span> */}
                 <InputContainer
                     typeName="password"
                     title="Senha"
@@ -114,14 +87,6 @@ const RegisterForm = () => {
                     errors={errors.password?.message}
                     register={register}
                 />
-
-                {/* <label htmlFor="password">Senha</label>
-                <input
-                    id="password"
-                    placeholder="Digite aqui sua senha"
-                    {...register("password")}
-                />
-                <span>{errors.password?.message}</span> */}
 
                 <InputContainer
                     typeName="confirm"
@@ -131,14 +96,6 @@ const RegisterForm = () => {
                     register={register}
                 />
 
-                {/* <label htmlFor="confirm">Confirmar senha</label>
-                <input
-                    id="confirm"
-                    placeholder="Digite novamente sua senha"
-                    {...register("password_confirm")}
-                />
-                <span>{errors.password_confirm?.message}</span> */}
-
                 <InputContainer
                     typeName="bio"
                     title="Bio"
@@ -147,15 +104,6 @@ const RegisterForm = () => {
                     register={register}
                 />
 
-                {/* <label htmlFor="bio">Bio</label>
-                <input
-                    id="bio"
-                    maxLength={30}
-                    placeholder="Fale sobre você"
-                    {...register("bio")}
-                    <span>{errors.bio?.message}</span>
-                /> */}
-
                 <InputContainer
                     typeName="contact"
                     title="Contato"
@@ -163,15 +111,6 @@ const RegisterForm = () => {
                     errors={errors.contact?.message}
                     register={register}
                 />
-
-                {/* <label htmlFor="contact">Contato</label>
-                <input
-                    id="contact"
-                    maxLength={30}
-                    placeholder="Opção de contato"
-                    {...register("contact")}
-                    <span>{errors.contact?.message}</span>
-                /> */}
 
                 <label htmlFor="select_module">Selecionar Módulo</label>
                 <select id="select_module" {...register("course_module")}>

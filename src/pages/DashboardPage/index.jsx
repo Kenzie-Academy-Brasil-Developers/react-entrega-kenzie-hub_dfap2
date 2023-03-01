@@ -1,33 +1,17 @@
 import StyledDashboard from "./style";
 import logo from "../../assets/images/Logo.svg";
-import api from "../../services/api";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { UserContext } from "../../providers/UserContext";
+import plus from "../../assets/images/plus.svg";
+import CardsList from "../../components/CardsList/index.jsx";
+import AddModal from "../../components/AddModal/index.jsx";
+import RemoveModal from "../../components/RemoveModal";
+import { TechContext } from "../../providers/TechContext";
 
 const DashBoardPage = () => {
-    const token = localStorage.getItem("@TOKEN");
-    const [data, setData] = useState({});
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        async function getUser() {
-            try {
-                const res = await api.get("/profile", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                setData(res.data);
-
-                return data;
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
-        getUser();
-    }, []);
+    const { navigate, user } = useContext(UserContext);
+    const { isOpen, setIsOpen, removeIsOpen, setRemoveIsOpen } =
+        useContext(TechContext);
 
     const logout = () => {
         localStorage.clear("@TOKEN");
@@ -47,15 +31,22 @@ const DashBoardPage = () => {
                 </div>
             </nav>
             <header>
-                <h1>Olá, {data.name}</h1>
-                <span className="header__span">{data.course_module}</span>
+                <h1>Olá, {user.name}</h1>
+                <span className="header__span">{user.course_module}</span>
             </header>
             <main>
-                <h2>Que pena estamos em desenvolvimento :(</h2>
-                <p>
-                    Nossa aplicação está em desenvolvimento, em breve teremos
-                    novidades
-                </p>
+                <div className="list__title">
+                    <h3>Tecnologias</h3>
+                    <button onClick={() => setIsOpen(true)}>
+                        <img src={plus} alt="plus button" />
+                    </button>
+                </div>
+                <CardsList />
+                <AddModal isOpen={isOpen} setIsOpen={setIsOpen} />
+                <RemoveModal
+                    removeIsOpen={removeIsOpen}
+                    setRemoveIsOpen={setRemoveIsOpen}
+                />
             </main>
         </StyledDashboard>
     );

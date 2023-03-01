@@ -1,6 +1,13 @@
 import StyledContainer from "./style";
 
-const InputContainer = ({ typeName, title, place, errors, register }) => {
+const InputContainer = ({
+    typeName,
+    title,
+    place,
+    errors,
+    register,
+    disabled,
+}) => {
     return (
         <StyledContainer>
             <label htmlFor={typeName}>{title}</label>
@@ -17,6 +24,7 @@ const InputContainer = ({ typeName, title, place, errors, register }) => {
                 {...register(typeName)}
                 id={typeName}
                 placeholder={place}
+                disabled={disabled}
             />
             <p>{errors}</p>
         </StyledContainer>

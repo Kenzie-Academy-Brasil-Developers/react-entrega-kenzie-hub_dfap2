@@ -2,13 +2,13 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import api from "../../services/api";
-import { useNavigate } from "react-router-dom";
 import FormContainer from "./style.js";
-import { useState } from "react";
+import { useContext } from "react";
 import logo from "../../assets/images/Logo.svg";
 import ButtonPrimary from "../Buttons/ButtonPrimary";
 import InputContainer from "../Input";
 import ButtonSecondary from "../Buttons/ButtonScondary";
+import { UserContext } from "../../providers/UserContext";
 
 const formSchema = yup
     .object({
@@ -21,8 +21,8 @@ const formSchema = yup
     .required();
 
 const LoginForm = () => {
-    const navigate = useNavigate();
-    const [user, setUser] = useState([]);
+    const { navigate, user, setUser, onSubmitFunctionLogin } =
+        useContext(UserContext);
 
     const {
         register,
@@ -32,27 +32,16 @@ const LoginForm = () => {
         resolver: yupResolver(formSchema),
     });
 
-    const onSubmitFunction = async (data) => {
-        try {
-            const res = await api.post("/sessions", data);
-            setUser(res.data.user);
-
-            localStorage.setItem("@TOKEN", res.data.token);
-            localStorage.setItem("@USERID", user.id);
-
-            navigate("/dashboard");
-        } catch (error) {
-            console.error(error);
-        }
+    const toRegister = (e) => {
+        e.preventDefault();
+        navigate("/register");
     };
-
-    const toRegister = () => navigate("/register");
 
     return (
         <FormContainer>
             <img src={logo} alt="logo" />
 
-            <form onSubmit={handleSubmit(onSubmitFunction)}>
+            <form onSubmit={handleSubmit(onSubmitFunctionLogin)}>
                 <h1>Login</h1>
 
                 <InputContainer
@@ -71,28 +60,16 @@ const LoginForm = () => {
                     register={register}
                 />
 
-                {/* <label htmlFo)r="email">E-mail</label>
-                <input
-                    id="email"
-                    placeholder="Digite seu e-mail"
-                    {...register("email")}
-                />
-                <p>{errors.email?.message}</p>
-
-                <label htmlFor="password">Senha</label>
-                <input
-                    id="password"
-                    placeholder="Digite sua senha"
-                    {...register("password")}
-                />
-                <p>{errors.password?.message}</p> */}
-
                 <ButtonPrimary color="active" text="Entrar" type="submit" />
 
                 <div className="footer">
                     <span>Ainda não possui uma conta?</span>
 
-                    <ButtonSecondary click={toRegister} text="Cadatre-se" />
+                    <ButtonSecondary
+                        onClick={toRegister}
+                        text="Cadatre-se"
+                        type="button"
+                    />
                 </div>
             </form>
         </FormContainer>
